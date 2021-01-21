@@ -33,7 +33,7 @@ def is_help_command(user_input):
 
 
 def is_validated_english_sentence(user_input):
-    if not all([c not in "0123456789_@#$%^&*()-+=[]{}\"\';:\|`~" for c in user_input]):
+    if not all([c.isalpha() or c in ".,!? " for c in user_input]):
         return False
     if all([c in ".,!? " for c in user_input]):
         return False
@@ -41,10 +41,9 @@ def is_validated_english_sentence(user_input):
 
 
 def is_validated_morse_code(user_input):
-    splited = user_input.split()
-    if not all([c in "-. " for word in splited for c in word]):
+    if not all([c in "-. " for c in user_input]):
         return False 
-    if not all([word in get_morse_code_dict().values() for word in splited]):
+    if not all([word in get_morse_code_dict().values() for word in user_input.split()]):
         return False
     return True
 
@@ -79,20 +78,20 @@ def main():
     print("Morse Code Program!!")
     # ===Modify codes below=============
     while True:
-        msg = input("Input your message(H - help, 0 - Exit): ")
-        if msg == "0":
+        user_input = input("Input your message(H - help, 0 - Exit): ")
+        if user_input == "0":
             break
-        if is_help_command(msg):
-            get_help_message()
-        elif is_validated_english_sentence(msg):
-            encoding_sentence(msg)
-        elif is_validated_morse_code(msg):
-            decoding_sentence(msg)
+        if is_help_command(user_input):
+            print(get_help_message())
+        elif is_validated_english_sentence(user_input):
+            print(encoding_sentence(user_input))
+        elif is_validated_morse_code(user_input):
+            print(decoding_sentence(user_input))
         else:
             print("Wrong Input")
     # ==================================
     print("Good Bye")
     print("Morse Code Program Finished!!")
 
-if __name__ == "__main__":
+if __name__ == "__main__": 
     main()
